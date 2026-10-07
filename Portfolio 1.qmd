@@ -1,0 +1,59 @@
+---
+title: "Portfolio 1"
+format: html
+---
+
+```{r}
+library(ggplot2)
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+The dataset I am investigating is focused on student Performance in Exams, found on kaggle: https://www.kaggle.com/datasets/spscientist/students-performance-in-exams. The data directly states in its acknowledgements "http://roycekimmons.com/tools/generated_data/exams" which includes "generated data." To understand what this looks like in other dataset I am going to look for the exact signals and tells that can further prove that the data is fabricated. The dataset claims to be looking into "marks secured by the students high school students from the United States." One interesting thing to note is that it says how the marks were "found" while being a generated dataset. 
+
+Some questions I am interested in to understand what parts of the data seems generated versus which parts might have passed as a real dataset are as follows:
+
+  1. Do the exams scores have distributions that would be found in real life? Any unusual clusters or groups? 
+
+  2. Did the students who studied more score better on the tests? 
+
+  3. Are there students that have the same records?
+
+  4. Do the writing and reading exam scores correlate? 
+
+```{r}
+exams <- read_csv("Exam Data /StudentsPerformance.csv")
+```
+
+```{r}
+scores <- exams |>
+  pivot_longer(
+    cols = c(`math score`, `reading score`, `writing score`),
+    names_to = "subject",
+    values_to = "score"
+  )
+
+ggplot(scores, aes(x = score)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~subject) +
+  labs( y = "Number of Students", x = "Exam Score", title = "Diagram One: Exam Scores Distribution by Subject")
+
+```
+
+Diagram one displays the exam score distributions for math, reading, and writing. There are a few things that may not reflect a dataset that was collected from real students. One, all classes have the same amount of students exactly, whereas in reality you would expect some fluctuation. Two, there was a student who received a score of 0 in math which seems very unlikely occur. Overall, to answer question one, the distributions seem fairly normal at first glance but after some consideration there are some things that seem unrealistic. Ultimately, this supports the idea that this data was generated not genuinely collected. 
+
+Looking at question two, it may be interesting to compare math scores with those who took the preparation course with those students who did not. 
+
+```{r}
+ggplot(exams, aes(x = `test preparation course`, y = `math score`)) +
+  geom_boxplot() + 
+  theme_minimal() +
+  labs(
+    x = "Test Preparation Course", 
+    y = "Math Exam Score", 
+    title = "Diagram Two: Math Exam Score and Test Preparation Course") 
+```
+
+
+
+
