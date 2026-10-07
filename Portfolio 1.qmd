@@ -1,6 +1,12 @@
 ---
 title: "Portfolio 1"
-format: html
+format: 
+  pdf:
+    colorlinks: true
+    execute:
+      echo: true
+      warnings: false
+      message: false
 ---
 
 ```{r}
@@ -9,6 +15,7 @@ library(readr)
 library(dplyr)
 library(tidyr)
 ```
+
 The dataset I am investigating is focused on student Performance in Exams, found on kaggle: https://www.kaggle.com/datasets/spscientist/students-performance-in-exams. The data directly states in its acknowledgements "http://roycekimmons.com/tools/generated_data/exams" which includes "generated data." To understand what this looks like in other dataset I am going to look for the exact signals and tells that can further prove that the data is fabricated. The dataset claims to be looking into "marks secured by the students high school students from the United States." One interesting thing to note is that it says how the marks were "found" while being a generated dataset. 
 
 Some questions I am interested in to understand what parts of the data seems generated versus which parts might have passed as a real dataset are as follows:
@@ -54,6 +61,37 @@ ggplot(exams, aes(x = `test preparation course`, y = `math score`)) +
     title = "Diagram Two: Math Exam Score and Test Preparation Course") 
 ```
 
+Diagram two clearly illustrates that the students who took the test preparation course did not do much better than those who did take the course. This is not what would be expected in reality, it would make much more sense if the students who took the preparation course achieved significantly higher scores. However, it could be the case that the course was not very well designed and thus was less impactful on exam scores. One thing that would suggest the data is real is the outliers in the "none" category (the students who did not take the preparation course) have lower scores, but it is more important to look at the data as a whole. 
 
+
+```{r}
+exams %>%
+  count(`math score`, `reading score`, `writing score`) %>%
+  filter(n > 1)
+```
+
+The table above shows the duplicates of exam scores accross the three subjects. While it is not surprising that there are duplicates (because there are 1000 students being studied) there are 20 combinations of scores that were repeated by two or three students. Another potentially unexpected statistic is there are three students that got 100% on all three subjects, while this does not inherently make the data synthetic, it is worth noting. Overall, this suggests but does not directly prove or confirm the data is fabricated.
+
+
+
+```{r}
+ggplot(exams, aes(x = `reading score`, y = `writing score`)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Diagram Three: Relationship Between Reading and Writing Scores",
+    x = "Writing Exam Score",
+    y = "Reading Exam Score"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+cor(exams$`reading score`, exams$`writing score`)
+```
+
+
+Diagram three displays a remarkably strong positive correlation between reading and writing exam scores. The exact correlation is 0.955, which is very strong. Overall, this is very strong but could be argued to be a reasonable finding since reading and writing are similar subjects that rely on a similar skill set.
 
 
