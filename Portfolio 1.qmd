@@ -1,11 +1,12 @@
 ---
-title: "Portfolio 1"
+title: "Portfolio 1" 
+Author: "Sofia Kariniemi"
 format: 
-  pdf:
-    colorlinks: true
-    execute:
-      warnings: false
-      message: false
+  pdf: 
+    colorlinks: true 
+    execute: 
+      warnings: false 
+      message: false 
 ---
 ```{r}
 library(ggplot2)
@@ -22,8 +23,7 @@ library(tidyr)
 
 ```{r}
 exams <- read_csv("Exam Data /StudentsPerformance.csv")
-```
-```{r}
+
 scores <- exams |>
   pivot_longer(
     cols = c(`math score`, `reading score`, `writing score`),
