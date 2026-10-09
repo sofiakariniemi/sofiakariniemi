@@ -21,13 +21,13 @@ library(dplyr)
 library(tidyr)
 ```
 
-The dataset I am investigating is focused on student Performance in Exams, found on kaggle: https://www.kaggle.com/datasets/spscientist/students-performance-in-exams.
+The dataset I am investigating is focused on student performance in exams, found on Kaggle: https://www.kaggle.com/datasets/spscientist/students-performance-in-exams.
 The dataset claims to be looking into "marks secured by the students high school students from the United States." By saying the data was "secured by students" it suggests that it came from a real study that went out and collected data, but this does not guarantee validity by any means.
-The data card says that the license is unkown and there is no available DOI citation, which means we cannot track exactly where it came from, but this does not automatically mean it is fake data.
+The data card says that the license is unknown and there is no available DOI citation, which means we cannot track exactly where it came from, but this does not automatically mean it is fake data.
 Some questions I am interested in, to determine if the data is generated or genuinely collected, are as follows:
 
 1\.
-Do the exams scores have distributions that would be found in real life?
+Do the exams scores follow distributions that are typically found in real life situations?
 Any unusual clusters or groups?
 
 2\.
@@ -63,7 +63,7 @@ ggplot(scores, aes(x = score)) +
 ```
 
 Diagram one displays the exam score distributions for math, reading, and writing from the dataset.
-The distributions are all very similar-all leaning right and roughly centering around 73%.
+The distributions are all very similar-all are left skewed and are roughly centering around 73% scores.
 Interestingly, there was a student who received a score of 0 in the math exam, which seems fairly unlikely to occur but not impossible.
 Ultimately, while this diagram cannot fully support or disprove whether this data was generated or collected it may raise some suspicions due to its very similar distributions.
 Looking at question two, it may be interesting to look into any potential duplicate records that would likely not be found in a real dataset.
@@ -74,10 +74,10 @@ exams %>%
   filter(n > 1)
 ```
 
-The table above shows the duplicates of exam scores across the three subjects and how many students had the same scores.
+The table above shows the repeated exam scores across the three subjects and how many students had those same scores.
 While it is not super surprising there are duplicate records (because there are 1000 students being studied), there are 20 combinations of scores that were repeated by two or three students, which feels like a large amount.
 Another potentially unexpected statistic is there are three students that got 100% on all three subjects, although this does not inherently make the data synthetic, it is worth noting.
-Overall, this table suggests the data is fabricated but can not directly prove or confirm it is, as the surprising things could be argued to be coincidence or reasonable for such a large sample.
+Overall, this table suggests the data is fabricated but cannot directly prove or confirm it is, as the surprising things could be argued to be coincidence or reasonable for such a large sample.
 
 ```{r}
 ggplot(exams, aes(x = `writing score`, y = `reading score`)) +
@@ -99,7 +99,7 @@ The exact correlation is 0.955, which is very strong.
 While the correlation is really strong, it could be argued to be a reasonable finding since reading and writing are similar subjects that rely on a similar skill set.
 Despite that potential argument, this is still a suspicious aspect.
 
-In conclusion, after exploring some questions it can be speculated that the data is fabricated, because it has several suspicious and unrealistic set ups that the diagrams and table displayed.
+In conclusion, after exploring some questions it can be speculated that the data is fabricated, because it has several suspicious and unrealistic traits that the diagrams and table displayed.
 To be precise, I believe it is likely synthetic but I am not fully certain because there is no obvious flaw.
-To prove the data is real, it would be interesting to know which school(s) this data was collected from, as it could then be checked directly.
-Additionally, if it was stated how the data was collected it might explain some things, like why one student got a 0 on their math exam (eg. if it was a survey and data was just inaccurate).
+To prove the data is real or increase my confidence in it, it would be interesting to know which school(s) this data was collected from, as it could then be checked directly.
+Additionally, if it was stated how the data was collected it might explain some things, like why one student got a 0 on their math exam (for example if it was a survey and data was just inaccurate).
